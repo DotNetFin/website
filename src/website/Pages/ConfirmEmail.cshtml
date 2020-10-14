@@ -1,0 +1,31 @@
+﻿@page
+@model website.Pages.ConfirmEmailModel
+@{
+}
+
+@if (Model.IsConfirmed)
+{
+    <h1 class="display-4">Thank you for joining us!</h1>
+    <p class="display-6">May We ask you to fill this small form. It helps us to prepare events that match audiences' expectations.</p>
+    <form method="post">
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="fullName">Full Name</label>
+                <input type="text" class="form-control" id="fullName" name="MemberInfo.FullName">
+            </div>
+            <div class="form-group col-md-6">
+                <label for="city">City</label>
+                <input type="text" class="form-control" id="city" name="MemberInfo.City" placeholder="e.g. Helsinki">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="keyTechSkills">Key Tech Skills</label>
+            <input type="text" class="form-control" id="keyTechSkills" name="MemberInfo.KeyTechSkills" placeholder="e.g. .net, typescript, asp.net, xamarin">
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+}
+else
+{
+    <h2>Something goes wrong! Please contact with support team!</h2>
+}
