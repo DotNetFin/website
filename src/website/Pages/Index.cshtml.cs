@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+using Hangfire;
 using LiteDB;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -29,10 +29,7 @@ namespace website.Pages
             }
         }
 
-        public async Task<IActionResult> OnPostAsync(
-            [FromServices] LiteDatabase db,
-            [FromServices] IEmailSender emailSender
-            )
+        public IActionResult OnPost([FromServices] LiteDatabase db)
         {
             try
             {
@@ -49,9 +46,9 @@ namespace website.Pages
                 if (member == null)
                 {
                     members.Insert(new Member(email));
-                    await emailSender.SendEmailAsync(email, "Say Hello!");
                     Response.Cookies.Append("isMember", bool.TrueString);
                     IsSubscribed = true;
+                    var jobId = BackgroundJob.Enqueue<IEmailSender>(sender => sender.SendEmailAsync(email, "hello!!!"));
                 }
 
                 return Page();
