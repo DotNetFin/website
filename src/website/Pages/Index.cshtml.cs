@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using website.Models;
-using website.Services.EmailSender;
+using website.Services.NotifictionService;
 
 namespace website.Pages
 {
@@ -48,7 +48,7 @@ namespace website.Pages
                     members.Insert(new Member(email));
                     Response.Cookies.Append("isMember", bool.TrueString);
                     IsSubscribed = true;
-                    var jobId = BackgroundJob.Enqueue<IEmailSender>(sender => sender.SendEmailAsync(email, "hello!!!"));
+                    var jobId = BackgroundJob.Enqueue<INotificationService>(sender => sender.GreetNewMember(email));
                 }
 
                 return Page();

@@ -7,6 +7,6 @@ namespace website.Services.EmailSender
 {
     public interface IEmailSender
     {
-        Task SendEmailAsync(string email, string content);
+        Task SendEmailAsync(string fromEmail, string toEmail,string subject, string plainTextContent, string htmlContent);
     }
 }

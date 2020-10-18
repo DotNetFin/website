@@ -37,7 +37,7 @@ namespace website
                 var path = Configuration.GetConnectionString("LiteDb");
                 return new LiteDatabase($"Filename={path}; Mode=Shared;");
             });
-            services.AddTransient<IEmailSender, ConsoleEmailSender>();
+            services.AddTransient<IEmailSender, SendgridEmailSender>();
             services.AddTransient<GitHubService>();
             services.AddHttpClient("github", c =>
             {

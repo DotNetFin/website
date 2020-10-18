@@ -5,9 +5,9 @@ namespace website.Services.EmailSender
 {
     public class ConsoleEmailSender : IEmailSender
     {
-        public Task SendEmailAsync(string email, string content)
+        public Task SendEmailAsync(string fromEmail, string toEmail, string subject, string plainTextContent, string htmlContent)
         {
-            Console.WriteLine(email, content);
+            Console.WriteLine($"Sends from {fromEmail} to {toEmail} with subject {subject}");
             return Task.CompletedTask;
         }
     }
