@@ -23,7 +23,11 @@ namespace website.Services.GitHubService
         {
             var request = new HttpRequestMessage(HttpMethod.Get, "/orgs/DotNetFin/repos");
 
-            var client = _clientFactory.CreateClient("github");
+            var client = _clientFactory.CreateClient();
+            client.BaseAddress = new Uri("https://api.github.com/");
+            // Github API versioning
+            client.DefaultRequestHeaders.Add("Accept", "application/vnd.github.inertia-preview+json");
+            client.DefaultRequestHeaders.Add("User-Agent", "DotNetFin");
 
             var response = await client.SendAsync(request);
 

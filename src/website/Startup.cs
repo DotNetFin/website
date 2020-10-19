@@ -39,13 +39,7 @@ namespace website
             });
             services.AddTransient<IEmailSender, SendgridEmailSender>();
             services.AddTransient<GitHubService>();
-            services.AddHttpClient("github", c =>
-            {
-                c.BaseAddress = new Uri("https://api.github.com/");
-                // Github API versioning
-                c.DefaultRequestHeaders.Add("Accept", "application/vnd.github.inertia-preview+json");
-                c.DefaultRequestHeaders.Add("User-Agent", "DotNetFin");
-            });
+            services.AddHttpClient();
             var path = Configuration.GetConnectionString("LiteDBHangfire");
             services.AddHangfire(p => p.UseLiteDbStorage(path));
         }
