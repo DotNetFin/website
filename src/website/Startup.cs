@@ -1,21 +1,15 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Threading.Tasks;
 using Hangfire;
 using Hangfire.LiteDB;
 using LiteDB;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.Extensions.Caching.Memory;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Options;
 using website.Services.EmailSender;
 using website.Services.GitHubService;
+using website.Services.NotifictionService;
 
 namespace website
 {
@@ -38,6 +32,7 @@ namespace website
                 return new LiteDatabase($"Filename={path}; Mode=Shared;");
             });
             services.AddTransient<IEmailSender, SendgridEmailSender>();
+            services.AddTransient<INotificationService, NotificationService>();
             services.AddTransient<GitHubService>();
             services.AddHttpClient();
             var path = Configuration.GetConnectionString("LiteDBHangfire");
@@ -57,6 +52,11 @@ namespace website
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            });
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
