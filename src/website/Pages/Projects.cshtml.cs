@@ -1,11 +1,6 @@
-using System;
 using System.Collections.Generic;
-using System.Net.Http;
-using System.Text.Json;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Caching.Memory;
-using Microsoft.Extensions.Logging;
 using website.Models;
 
 namespace website.Pages
@@ -22,7 +17,7 @@ namespace website.Pages
         }
         public void OnGet()
         {
-            if (_cache.TryGetValue("projects", out var projects))
+            if (_cache.TryGetValue(CacheKeys.GITHUB_PROJECTS, out var projects))
             {
                 Projects = projects as IEnumerable<ProjectViewModel>;
             }

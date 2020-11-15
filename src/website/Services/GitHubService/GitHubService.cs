@@ -35,7 +35,7 @@ namespace website.Services.GitHubService
             {
                 using var responseStream = await response.Content.ReadAsStreamAsync();
                 var retrievedProjects = await JsonSerializer.DeserializeAsync<IEnumerable<ProjectViewModel>>(responseStream);
-                _cache.Set("projects", retrievedProjects, DateTimeOffset.UtcNow.AddHours(4));
+                _cache.Set(CacheKeys.GITHUB_PROJECTS, retrievedProjects, DateTimeOffset.UtcNow.AddHours(4));
             }
         }
     }

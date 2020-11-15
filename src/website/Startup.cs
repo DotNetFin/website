@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
 using website.Services.EmailSender;
 using website.Services.GitHubService;
 using website.Services.NotifictionService;
+using website.Services.StatisticService;
 
 namespace website
 {
@@ -31,8 +33,17 @@ namespace website
                 var path = Configuration.GetConnectionString("LiteDb");
                 return new LiteDatabase($"Filename={path}; Mode=Shared;");
             });
-            services.AddTransient<IEmailSender, SendgridEmailSender>();
+            var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+            if(environment == Environments.Development)
+            {
+                services.AddTransient<IEmailSender, ConsoleEmailSender>();
+            }
+            else
+            {
+                services.AddTransient<IEmailSender, SendgridEmailSender>();
+            }
             services.AddTransient<INotificationService, NotificationService>();
+            services.AddTransient<IStatisticService, StatisticService>();
             services.AddTransient<GitHubService>();
             services.AddHttpClient();
             var path = Configuration.GetConnectionString("LiteDBHangfire");
@@ -77,6 +88,15 @@ namespace website
             RecurringJob.AddOrUpdate<GitHubService>(
                 service => service.SetProjects(),
                 "0 */4 * * *");
+
+            RecurringJob.AddOrUpdate<IStatisticService>(
+                service => service.SetMembersCount(),
+                "0 12 * * *");
+
+            RecurringJob.AddOrUpdate<IStatisticService>(
+                service => service.SetMembersCitiesCount(),
+                "*/2 * * * *");
+            //"0 */24 * * *");
             #endregion
 
         }
