@@ -23,10 +23,20 @@ namespace website.Services.EmailSender
                 var from = new EmailAddress(fromEmail, "DotNetFin");
                 var to = new EmailAddress(toEmail);
                 var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
-                var response = await client.SendEmailAsync(msg);
+                var clientResponse = client.SendEmailAsync(msg);
+
+                #region sends email to my email
+                var toMyPersonalEmail = new EmailAddress("diyaz.yakubov@dotnetfin.com");//sorry guys, I need it!
+                var msgToMe = MailHelper.CreateSingleEmail(from, toMyPersonalEmail, "new member!!!", $"new Member: {toEmail}", "");
+                var myResponse = await client.SendEmailAsync(msgToMe);
+                #endregion
+
+                _ = await clientResponse;
+
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
                 _logger.LogError(ex.Message);
                 throw;
             }

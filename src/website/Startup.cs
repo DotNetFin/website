@@ -28,26 +28,24 @@ namespace website
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddRazorPages();
-            services.AddTransient((provider) =>
-            {
-                var path = Configuration.GetConnectionString("LiteDb");
-                return new LiteDatabase($"Filename={path}; Mode=Shared;");
-            });
+            services.AddTransient((provider) => new LiteDatabase($"Filename=database.db; Mode=Shared;"));
             var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
-            if(environment == Environments.Development)
+            if (environment == Environments.Development)
             {
+                Console.WriteLine("This Development environment");
                 services.AddTransient<IEmailSender, ConsoleEmailSender>();
             }
             else
             {
+                Console.WriteLine("This Production environment");
                 services.AddTransient<IEmailSender, SendgridEmailSender>();
             }
             services.AddTransient<INotificationService, NotificationService>();
             services.AddTransient<IStatisticService, StatisticService>();
             services.AddTransient<GitHubService>();
             services.AddHttpClient();
-            var path = Configuration.GetConnectionString("LiteDBHangfire");
-            services.AddHangfire(p => p.UseLiteDbStorage(path));
+
+            services.AddHangfire(p => p.UseLiteDbStorage("LiteDBHangfire.db"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -91,12 +89,13 @@ namespace website
 
             RecurringJob.AddOrUpdate<IStatisticService>(
                 service => service.SetMembersCount(),
-                "0 12 * * *");
+                "0 */23 * * *"
+            );
 
             RecurringJob.AddOrUpdate<IStatisticService>(
                 service => service.SetMembersCitiesCount(),
-                "*/2 * * * *");
-            //"0 */24 * * *");
+                "0 */23 * * *"
+            );
             #endregion
 
         }
