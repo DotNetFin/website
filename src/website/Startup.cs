@@ -32,13 +32,19 @@ namespace website
             var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
             if (environment == Environments.Development)
             {
-                Console.WriteLine("This Development environment");
+                Console.WriteLine("This is Development environment");
                 services.AddTransient<IEmailSender, ConsoleEmailSender>();
             }
             else
             {
-                Console.WriteLine("This Production environment");
+                Console.WriteLine("This is Production environment");
                 services.AddTransient<IEmailSender, SendgridEmailSender>();
+
+                services.AddHttpsRedirection(options =>
+                {
+                    options.RedirectStatusCode = Microsoft.AspNetCore.Http.StatusCodes.Status308PermanentRedirect;
+                    options.HttpsPort = 443;
+                });
             }
             services.AddTransient<INotificationService, NotificationService>();
             services.AddTransient<IStatisticService, StatisticService>();

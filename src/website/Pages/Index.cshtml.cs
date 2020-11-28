@@ -45,10 +45,11 @@ namespace website.Pages
                 var member = members.FindOne(p => p.Email == email);
                 if (member == null)
                 {
-                    members.Insert(new Member(email));
+                    var newMember = new Member(email);
+                    members.Insert(newMember);
                     Response.Cookies.Append("isMember", bool.TrueString);
                     IsSubscribed = true;
-                    var jobId = BackgroundJob.Enqueue<INotificationService>(sender => sender.GreetNewMember(email));
+                    var jobId = BackgroundJob.Enqueue<INotificationService>(sender => sender.GreetNewMember(email, newMember.Token));
                 }
 
                 return Page();

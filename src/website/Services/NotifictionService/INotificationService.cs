@@ -7,6 +7,6 @@ namespace website.Services.NotifictionService
 {
     public interface INotificationService
     {
-        void GreetNewMember(string email);
+        void GreetNewMember(string email, string token);
     }
 }
