@@ -116,23 +116,24 @@ namespace website.Services.EmailSender
 						</style>
 					</head>
 					<body style=""padding:0; margin:0; -webkit-text-size-adjust:none; -ms-text-size-adjust:100%; background-color:#e8e8e8; font-family: 'Montserrat',Arial, Helvetica, sans-serif; font-size:16px; line-height:24px; color:#05202D"">
-						<table width=""100%"" border=""0"" cellspacing=""0"" cellpadding=""0"">
-							<tr>
-								<td bgcolor=""#EBEBEB"" style=""font-size:0px"">&zwnj;</td>
-									<td align=""center"" width=""600"" bgcolor=""#FFFFFF"">
-										<table width=""100%"" border=""0"" cellspacing=""0"" cellpadding=""0"">
-											<tbody>
-												<tr>
-													<td>
-														<img src=""http://dotnetfin.com/img/logo_64x64.png"" style=""padding-top:30px; padding-right: 50px; padding-left: 50px;padding-bottom: 30px;"" alt=""logo"" class=""logo"" align=""left""/>
-													</td>
-												</tr>");
+						<table width=""100%"" border=""0"" cellspacing=""0"" cellpadding=""0"" style=""table-layout:fixed;"">
+							<tbody>
+								<tr>
+									<td bgcolor=""#EBEBEB"" style=""font-size:0px"">&zwnj;</td>
+										<td align=""center"" width=""600"">
+											<table width=""100%"" border=""0"" cellspacing=""0"" cellpadding=""0"" style=""margin-top: 1vh;background-color: #FFFFFF;"">
+												<tbody style=""text-align: justify;"">
+													<tr>
+														<td>
+															<img src=""http://dotnetfin.com/img/logo_64x64.png"" style=""padding-top:30px; padding-right: 50px; padding-left: 50px;padding-bottom: 30px;"" alt=""logo"" class=""logo"" align=""left""/>
+														</td>
+													</tr>");
 
         public void WithH1Header(string header)
         {
             builder.Append(@$"
             <tr>
-				<td class=""h1"" align=""left"" bgcolor=""#FFFFFF"" style=""padding-top:20px; padding-right: 50px; padding-left: 50px;padding-bottom: 0px; font-size: 36px; line-height: 43px; font-weight: 700; color:#003580;"">
+				<td class=""h1"" align=""left"" style=""padding-top:20px; padding-right: 50px; padding-left: 50px;padding-bottom: 0px; font-size: 36px; line-height: 43px; font-weight: 700; color:#003580;"">
 					{header}
                 </ td >
             </ tr >");
@@ -142,7 +143,7 @@ namespace website.Services.EmailSender
         {
             builder.Append(@$"
             <tr>
-				<td class=""h2"" align=""left"" bgcolor=""#FFFFFF"" style=""padding-top:25px; padding-right: 50px; padding-left: 50px;padding-bottom: 0px; font-size: 18px; line-height: 27px; font-weight:600; color:#003580;"">
+				<td class=""h2"" align=""left"" style=""padding-top:25px; padding-right: 50px; padding-left: 50px;padding-bottom: 0px; font-size: 18px; line-height: 27px; font-weight:600; color:#003580;"">
 					{header}
                 </ td >
             </ tr >");
@@ -151,22 +152,19 @@ namespace website.Services.EmailSender
         public void WithParagraph(string paragraph)
         {
             builder.Append(@$"
-            <tr>
-				<td class=""p"" style=""padding-top:25px; padding-right: 50px; padding-left: 50px;padding-bottom: 0px; font-size: 16px; line-height: 26px; font-weight:200; color:#05202D; opacity: 0.7;"">
-				{paragraph}
-                </ td >
-            </ tr >");
+            <tr><td class=""p"" style=""padding-top:25px; padding-right: 50px; padding-left: 50px;padding-bottom: 0px; font-size: 16px; line-height: 26px; font-weight:200; color:#05202D; opacity: 0.7;"">{paragraph}</td></ tr >");
         }
 
 
         public string Build()
         {
             builder.Append(@"
-                                    </tbody>
-				                </table>
-			                </td>
-		                <td bgcolor=""#EBEBEB"" style=""font-size:0px"">&zwnj;</td>
-                    </ tr >
+										</tbody>
+									</table>
+								</td>
+							<td bgcolor=""#EBEBEB"" style=""font-size:0px"">&zwnj;</td>
+						</tr>
+					</tbody>
                 </ table >
                 </ body >
             </ html >");
