@@ -47,10 +47,11 @@ namespace website.Pages
                 {
                     var newMember = new Member(email);
                     members.Insert(newMember);
-                    Response.Cookies.Append("isMember", bool.TrueString);
-                    IsSubscribed = true;
                     var jobId = BackgroundJob.Enqueue<INotificationService>(sender => sender.GreetNewMember(email, newMember.Token));
                 }
+
+                IsSubscribed = true;
+                Response.Cookies.Append("isMember", bool.TrueString);
 
                 return Page();
             }
