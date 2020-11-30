@@ -33,7 +33,7 @@ namespace website.Pages
         {
             try
             {
-                string email = Request.Form["email"].ToString();
+                string email = Request.Form["email"].ToString().ToLower();
                 if (string.IsNullOrWhiteSpace(email))
                     throw new ArgumentNullException("Email couldn't be empty!");
 

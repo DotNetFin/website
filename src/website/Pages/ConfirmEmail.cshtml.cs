@@ -62,9 +62,9 @@ namespace website.Pages
 
                 if (member.TryConfirmMembership(token))
                 {
-                    member.FullName = MemberInfo.FullName;
-                    member.City = MemberInfo.City;
-                    member.KeyTechSkills = MemberInfo.KeyTechSkills;
+                    member.FullName = MemberInfo.FullName.ToUpper();
+                    member.City = MemberInfo.City.ToUpper();
+                    member.KeyTechSkills = MemberInfo.KeyTechSkills.ToUpper();
                     members.Update(member);
                 }
                 else
