@@ -1,12 +1,15 @@
 ﻿@page
 @model website.Pages.ConfirmEmailModel
 @{
+    ViewData["Title"] = "Confirmation form";
+    ViewData["Description"] = "May We ask you to fill this small form, please? It helps us to prepare events that match audiences' expectations.";
+    ViewData["Keywords"] = "DotNetFin: Confirmation";
 }
 
 @if (Model.IsConfirmed)
 {
     <h1 class="display-4">Thank you for joining us!</h1>
-    <p class="display-6">May We ask you to fill this small form. It helps us to prepare events that match audiences' expectations.</p>
+    <p class="display-6">May We ask you to fill this small form, please? It helps us to prepare events that match audiences' expectations.</p>
     <form method="post">
         <div class="form-row">
             <div class="form-group col-md-6">

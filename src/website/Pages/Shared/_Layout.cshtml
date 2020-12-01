@@ -4,8 +4,25 @@
     <meta charset="utf-8" />
     <link rel="icon" href="~/favicon.png" sizes="16x16" type="image/png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="keywords" content="C#, CSharp, DotNet, dotnet, .net, .NET, Finland, Suomi, IT Finland, IT, Community" />
-    <meta name="description" content="The community of independent developers/">
+
+    @if (ViewData["Keywords"] != null)
+    {
+        <meta name="keywords" content="@ViewData["Keywords"]" />
+    }
+    else
+    {
+        <meta name="keywords" content="C#, CSharp, DotNet, dotnet, .net, .NET, Finland, Suomi, IT Finland, IT, Community" />
+    }
+
+    @if (ViewData["Description"] != null)
+    {
+        <meta name="description" content="@ViewData["Description"]" />
+    }
+    else
+    {
+        <meta name="description" content="The community of independent developers/">
+    }
+
     <meta name="author" content="DotNetFin" />
     <title>@ViewData["Title"] - DotNetFin</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
@@ -54,15 +71,17 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
 
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-95J10Z6NY7"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
+    <environment include="Production">
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-95J10Z6NY7"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag() { dataLayer.push(arguments); }
+            gtag('js', new Date());
 
-        gtag('config', 'G-95J10Z6NY7');
-    </script>
+            gtag('config', 'G-95J10Z6NY7');
+        </script>
+    </environment>
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>
