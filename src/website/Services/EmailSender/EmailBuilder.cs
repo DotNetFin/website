@@ -9,9 +9,9 @@ namespace website.Services.EmailSender
 				<html xmlns=""http://www.w3.org/1999/xhtml"">
 					<head>
 						<title>DotNetFin</title>
-						<meta http-equiv=""Content-Type"" content=""text/html; charset=UTF-8"" />
-						<meta name=""x-apple-disable-message-reformatting"" />
-						<meta name=""viewport"" content=""width=device-width, initial-scale=1.0"" />	
+						<meta http-equiv=""Content-Type"" content=""text/html; charset=UTF-8""/>
+						<meta name=""x-apple-disable-message-reformatting""/>
+						<meta name=""viewport"" content=""width=device-width, initial-scale=1.0""/>	
 						<style type=""text/css"">
 
 							/* Outlook link fix */
@@ -135,8 +135,8 @@ namespace website.Services.EmailSender
             <tr>
 				<td class=""h1"" align=""left"" style=""padding-top:20px; padding-right: 50px; padding-left: 50px;padding-bottom: 0px; font-size: 36px; line-height: 43px; font-weight: 700; color:#003580;"">
 					{header}
-                </ td >
-            </ tr >");
+                </td>
+            </tr>");
         }
 
         public void WithH2Header(string header)
@@ -145,14 +145,14 @@ namespace website.Services.EmailSender
             <tr>
 				<td class=""h2"" align=""left"" style=""padding-top:25px; padding-right: 50px; padding-left: 50px;padding-bottom: 0px; font-size: 18px; line-height: 27px; font-weight:600; color:#003580;"">
 					{header}
-                </ td >
-            </ tr >");
+                </td>
+            </tr>");
         }
 
         public void WithParagraph(string paragraph)
         {
             builder.Append(@$"
-            <tr><td class=""p"" style=""padding-top:25px; padding-right: 50px; padding-left: 50px;padding-bottom: 0px; font-size: 16px; line-height: 26px; font-weight:200; color:#05202D; opacity: 0.7;"">{paragraph}</td></ tr >");
+            <tr><td class=""p"" style=""padding-top:25px; padding-right: 50px; padding-left: 50px;padding-bottom: 0px; font-size: 16px; line-height: 26px; font-weight:200; color:#05202D; opacity: 0.7;"">{paragraph}</td></tr>");
         }
 
 
@@ -165,9 +165,9 @@ namespace website.Services.EmailSender
 							<td bgcolor=""#EBEBEB"" style=""font-size:0px"">&zwnj;</td>
 						</tr>
 					</tbody>
-                </ table >
-                </ body >
-            </ html >");
+                </table>
+                </body>
+            </html>");
             return builder.ToString();
         }
     }
