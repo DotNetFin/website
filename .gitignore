@@ -351,3 +351,7 @@ MigrationBackup/
 
 # liteDb databases
 *.db
+
+dist
+
+.DS_Store
