@@ -28,6 +28,7 @@ namespace website
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddRazorPages();
+            services.AddResponseCaching();
             services.AddTransient((provider) => new LiteDatabase($"Filename=database.db; Mode=Shared;"));
             var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
             if (environment == Environments.Development)
@@ -75,6 +76,8 @@ namespace website
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+
+            app.UseResponseCaching();
 
             app.UseRouting();
 
