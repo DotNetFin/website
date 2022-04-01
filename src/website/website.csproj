@@ -1,18 +1,19 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <UserSecretsId>25616af2-f8a0-4bcb-931e-5c7f97cbbe0c</UserSecretsId>
     <DebugType>None</DebugType>
     <DebugSymbols>False</DebugSymbols>
+    <LangVersion>10.0</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Hangfire.AspNetCore" Version="1.7.17" />
-    <PackageReference Include="Hangfire.Core" Version="1.7.17" />
-    <PackageReference Include="Hangfire.LiteDB" Version="0.4.0" />
-    <PackageReference Include="LiteDB" Version="5.0.9" />
-    <PackageReference Include="SendGrid" Version="9.21.1" />
+    <PackageReference Include="Hangfire.AspNetCore" Version="1.7.28" />
+    <PackageReference Include="Hangfire.Core" Version="1.7.28" />
+    <PackageReference Include="Hangfire.LiteDB" Version="0.4.1" />
+    <PackageReference Include="LiteDB" Version="5.0.11" />
+    <PackageReference Include="SendGrid" Version="9.27.0" />
   </ItemGroup>
 
 </Project>

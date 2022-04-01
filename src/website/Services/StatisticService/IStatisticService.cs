@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace website.Services.StatisticService
+namespace website.Services.StatisticService;
+
+public interface IStatisticService
 {
-    public interface IStatisticService
-    {
-        void SetMembersCount();
-        void SetMembersCitiesCount();
-    }
+    void SetMembersCount();
+    void SetMembersCitiesCount();
 }

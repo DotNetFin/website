@@ -5,79 +5,78 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using website.Models;
 
-namespace website.Pages
+namespace website.Pages;
+
+public class ConfirmEmailModel : PageModel
 {
-    public class ConfirmEmailModel : PageModel
+    private readonly ILogger<IndexModel> _logger;
+    private readonly LiteDatabase _db;
+
+    public bool IsConfirmed { get; set; }
+
+    [BindProperty]
+    public MemberInfoViewModel MemberInfo { get; set; }
+
+    public ConfirmEmailModel(LiteDatabase db, ILogger<IndexModel> logger)
     {
-        private readonly ILogger<IndexModel> _logger;
-        private readonly LiteDatabase _db;
+        _db = db;
+        _logger = logger;
+    }
 
-        public bool IsConfirmed { get; set; }
-
-        [BindProperty]
-        public MemberInfoViewModel MemberInfo { get; set; }
-
-        public ConfirmEmailModel(LiteDatabase db, ILogger<IndexModel> logger)
+    public void OnGet([FromQuery] string email, [FromQuery] string token)
+    {
+        try
         {
-            _db = db;
-            _logger = logger;
-        }
-
-        public void OnGet([FromQuery] string email, [FromQuery] string token)
-        {
-            try
+            var members = _db.GetCollection<Member>("members");
+            var member = members.FindOne(p => p.Email == email);
+            if (member == null)
+                throw new ApplicationException($"There is no memeber with the given email: {email}");
+            if (member.TryConfirmMembership(token))
             {
-                var members = _db.GetCollection<Member>("members");
-                var member = members.FindOne(p => p.Email == email);
-                if (member == null)
-                    throw new ApplicationException($"There is no memeber with the given email: {email}");
-                if (member.TryConfirmMembership(token))
-                {
-                    IsConfirmed = true;
-                    members.Update(member);
-                }
-                else
-                {
-                    throw new ApplicationException("Token is not valid!");
-                }
+                IsConfirmed = true;
+                members.Update(member);
             }
-            catch (Exception ex)
+            else
             {
-                _logger.LogError(ex.Message);
-                IsConfirmed = false;
+                throw new ApplicationException("Token is not valid!");
             }
         }
-
-        public IActionResult OnPost(
-            [FromQuery] string email,
-            [FromQuery] string token
-            )
+        catch (Exception ex)
         {
-            try
-            {
-                var members = _db.GetCollection<Member>("members");
-                var member = members.FindOne(p => p.Email == email);
-                if (member == null)
-                    throw new ApplicationException($"There is no memeber with the given email: {email}");
+            _logger.LogError(ex.Message);
+            IsConfirmed = false;
+        }
+    }
 
-                if (member.TryConfirmMembership(token))
-                {
-                    member.FullName = MemberInfo.FullName.ToUpper();
-                    member.City = MemberInfo.City.ToUpper();
-                    member.KeyTechSkills = MemberInfo.KeyTechSkills.ToUpper();
-                    members.Update(member);
-                }
-                else
-                {
-                    throw new ApplicationException("Token is not valid!");
-                }
-                return Redirect("/");
-            }
-            catch (Exception ex)
+    public IActionResult OnPost(
+        [FromQuery] string email,
+        [FromQuery] string token
+        )
+    {
+        try
+        {
+            var members = _db.GetCollection<Member>("members");
+            var member = members.FindOne(p => p.Email == email);
+            if (member == null)
+                throw new ApplicationException($"There is no memeber with the given email: {email}");
+
+            if (member.TryConfirmMembership(token))
             {
-                _logger.LogError(ex.Message);
-                return Page();
+                member.FullName = MemberInfo.FullName.ToUpper();
+                member.City = MemberInfo.City.ToUpper();
+                member.KeyTechSkills = MemberInfo.KeyTechSkills.ToUpper();
+                members.Update(member);
             }
+            else
+            {
+                throw new ApplicationException("Token is not valid!");
+            }
+            return Redirect("/");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex.Message);
+            return Page();
         }
     }
 }
