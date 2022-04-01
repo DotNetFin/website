@@ -8,58 +8,57 @@ using Microsoft.Extensions.Logging;
 using website.Models;
 using website.Services.NotifictionService;
 
-namespace website.Pages
+namespace website.Pages;
+
+public class IndexModel : PageModel
 {
-    public class IndexModel : PageModel
+    private readonly ILogger<IndexModel> _logger;
+
+    public bool IsSubscribed { get; set; }
+    public IndexModel(ILogger<IndexModel> logger)
     {
-        private readonly ILogger<IndexModel> _logger;
+        _logger = logger;
+    }
 
-        public bool IsSubscribed { get; set; }
-        public IndexModel(ILogger<IndexModel> logger)
+    public void OnGet()
+    {
+        var cookieValue = Request.Cookies["isMember"];
+        if (bool.TrueString == cookieValue)
         {
-            _logger = logger;
+            IsSubscribed = true;
         }
+    }
 
-        public void OnGet()
+    public IActionResult OnPost([FromServices] LiteDatabase db)
+    {
+        try
         {
-            var cookieValue = Request.Cookies["isMember"];
-            if (bool.TrueString == cookieValue)
+            string email = Request.Form["email"].ToString().ToLower();
+            if (string.IsNullOrWhiteSpace(email))
+                throw new ArgumentNullException("Email couldn't be empty!");
+
+            if (!Regex.IsMatch(email, @"^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$"))
+                throw new ArgumentException("Email is incorrect!");
+
+
+            var members = db.GetCollection<Member>("members");
+            var member = members.FindOne(p => p.Email == email);
+            if (member == null)
             {
-                IsSubscribed = true;
+                var newMember = new Member(email);
+                members.Insert(newMember);
+                var jobId = BackgroundJob.Enqueue<INotificationService>(sender => sender.GreetNewMember(email, newMember.Token));
             }
+
+            IsSubscribed = true;
+            Response.Cookies.Append("isMember", bool.TrueString);
+
+            return Page();
         }
-
-        public IActionResult OnPost([FromServices] LiteDatabase db)
+        catch (Exception ex)
         {
-            try
-            {
-                string email = Request.Form["email"].ToString().ToLower();
-                if (string.IsNullOrWhiteSpace(email))
-                    throw new ArgumentNullException("Email couldn't be empty!");
-
-                if (!Regex.IsMatch(email, @"^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$"))
-                    throw new ArgumentException("Email is incorrect!");
-
-
-                var members = db.GetCollection<Member>("members");
-                var member = members.FindOne(p => p.Email == email);
-                if (member == null)
-                {
-                    var newMember = new Member(email);
-                    members.Insert(newMember);
-                    var jobId = BackgroundJob.Enqueue<INotificationService>(sender => sender.GreetNewMember(email, newMember.Token));
-                }
-
-                IsSubscribed = true;
-                Response.Cookies.Append("isMember", bool.TrueString);
-
-                return Page();
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex.Message, ex.StackTrace);
-                return Page();
-            }
+            _logger.LogError(ex.Message, ex.StackTrace);
+            return Page();
         }
     }
 }

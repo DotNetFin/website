@@ -1,10 +1,10 @@
 ﻿using System.Text;
 
-namespace website.Services.EmailSender
+namespace website.Services.EmailSender;
+
+public class EmailBuilder
 {
-    public class EmailBuilder
-    {
-        private StringBuilder builder = new StringBuilder(@"
+    private StringBuilder builder = new StringBuilder(@"
 			<!DOCTYPE html PUBLIC ""-//W3C//DTD XHTML 1.0 Transitional//EN"" ""http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"">
 				<html xmlns=""http://www.w3.org/1999/xhtml"">
 					<head>
@@ -129,36 +129,36 @@ namespace website.Services.EmailSender
 														</td>
 													</tr>");
 
-        public void WithH1Header(string header)
-        {
-            builder.Append(@$"
+    public void WithH1Header(string header)
+    {
+        builder.Append(@$"
             <tr>
 				<td class=""h1"" align=""left"" style=""padding-top:20px; padding-right: 50px; padding-left: 50px;padding-bottom: 0px; font-size: 36px; line-height: 43px; font-weight: 700; color:#003580;"">
 					{header}
                 </td>
             </tr>");
-        }
+    }
 
-        public void WithH2Header(string header)
-        {
-            builder.Append(@$"
+    public void WithH2Header(string header)
+    {
+        builder.Append(@$"
             <tr>
 				<td class=""h2"" align=""left"" style=""padding-top:25px; padding-right: 50px; padding-left: 50px;padding-bottom: 0px; font-size: 18px; line-height: 27px; font-weight:600; color:#003580;"">
 					{header}
                 </td>
             </tr>");
-        }
+    }
 
-        public void WithParagraph(string paragraph)
-        {
-            builder.Append(@$"
+    public void WithParagraph(string paragraph)
+    {
+        builder.Append(@$"
             <tr><td class=""p"" style=""padding-top:25px; padding-right: 50px; padding-left: 50px;padding-bottom: 0px; font-size: 16px; line-height: 26px; font-weight:200; color:#05202D; opacity: 0.7;"">{paragraph}</td></tr>");
-        }
+    }
 
 
-        public string Build()
-        {
-            builder.Append(@"
+    public string Build()
+    {
+        builder.Append(@"
 										</tbody>
 									</table>
 								</td>
@@ -168,7 +168,6 @@ namespace website.Services.EmailSender
                 </table>
                 </body>
             </html>");
-            return builder.ToString();
-        }
+        return builder.ToString();
     }
 }
