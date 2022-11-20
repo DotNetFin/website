@@ -1,4 +1,4 @@
-# website
+# website [todo: add badges]
 [The website](https://dotnetfin.com) of the community
 
 # DotNetFin
