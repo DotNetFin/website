@@ -1,0 +1,8 @@
+- name: Shutdown Machines
+  hosts: all
+  gather_facts: false
+  
+  tasks:
+   - name: Shutdown the machines
+     become: true
+     shell: shutdown -h now
