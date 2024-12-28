@@ -5,6 +5,15 @@ on:
     branches: [ master ]
   pull_request:
     branches: [ master ]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Environment for build"
+        required: true
+        default: "production"
+        options:
+          - "production"
+          - "development"
 
 jobs:
   build:
