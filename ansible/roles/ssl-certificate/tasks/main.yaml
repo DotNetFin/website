@@ -1,0 +1,23 @@
+---
+
+- name: Copy certificates from local to remote
+  become: true
+  copy:
+    src: ../inventory/.cert/dotnetfin.com.zip
+    dest: /etc/ssl
+    owner: root
+    group: root
+    mode: 0755
+
+- name: Unzip the certificates
+  become: true
+  command: unzip -o /etc/ssl/dotnetfin.com.zip -d /etc/ssl
+  
+
+- name: Move the crt file to the correct location
+  become: true
+  command: mv /etc/ssl/certificate.crt /etc/ssl/certs/
+
+- name: Move the key file to the correct location
+  become: true
+  command: mv /etc/ssl/private.key /etc/ssl/private/

@@ -1,0 +1,10 @@
+- name: dotnetfin setup
+  hosts: server
+  gather_facts: true
+  become: true
+  roles:
+    - role: prereq
+    - role: ssl-certificate
+    - role: github-actions-certificate
+    - role: nginx
+    - role: setup-services

@@ -1,0 +1,48 @@
+---
+
+- name: Create folder if it does not exist
+  become: true
+  command: mkdir -p /home/{{ ansible_user }}/.ssh
+
+- name: Check if the file exists
+  stat: 
+    path: /home/{{ ansible_user }}/.ssh/github-actions
+  register: github_file
+
+- name: Generate the certificate
+  become: true
+  command: ssh-keygen -t rsa -b 4096 -C "diyaz.yakubov@gmail.com" -N "" -f /home/{{ ansible_user }}/.ssh/github-actions
+  when: not github_file.stat.exists
+
+# - name: Create authorized keys file if it does not exist
+#   become: true
+#   command: touch /home/{{ ansible_user }}/.ssh/authorized_keys
+#   when: not github_file.stat.exists
+
+# this may fail, but manual execution will work
+- name: Add public key to authorized keys
+  become: true
+  command: cat /home/{{ ansible_user }}/.ssh/github-actions.pub >> /home/{{ ansible_user }}/.ssh/authorized_keys
+  when: not github_file.stat.exists
+
+- name: Copy the public key to the local machine
+  fetch:
+    src: "/home/{{ ansible_user }}/.ssh/github-actions"
+    dest: "../inventory/.cert/github-actions"
+    flat: yes
+
+- name: Get the IP address
+  command: curl ifconfig.me
+  register: host_ip
+
+- name: Print the IP address
+  debug:
+    var: host_ip.stdout
+
+# - name: ssh-keyscan for that IP
+#   command: ssh-keyscan -H {{ host_ip.stdout }}
+#   register: ssh_key
+
+# - name: Print the ssh-key
+#   debug:
+#     var: ssh_key.stdout

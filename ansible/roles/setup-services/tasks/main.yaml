@@ -1,0 +1,30 @@
+---
+
+- name: Create folder if it does not exist
+  become: true
+  command: mkdir -p /var/www/DotNetFin/
+
+- name: Copy the service files
+  become: true
+  copy:
+    src: ../inventory/services
+    dest: /etc/systemd/system/
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Start services
+  become: true
+  command: systemctl start {{ item }}
+  with_items:
+    - kestrel-dotnetfin-watcher.path
+    - kestrel-dotnetfin-watcher.service
+    - kestrel-dotnetfin.service
+
+- name: Enable services
+  become: true
+  command: systemctl enable {{ item }}
+  with_items:
+    - kestrel-dotnetfin-watcher.path
+    - kestrel-dotnetfin-watcher.service
+    - kestrel-dotnetfin.service

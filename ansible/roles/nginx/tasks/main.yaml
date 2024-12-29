@@ -1,0 +1,16 @@
+---
+
+- name: Copy the nginx configuration file
+  become: true
+  copy:
+    src: ../inventory/nginx.conf
+    dest: /etc/nginx/sites-available/default
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Restart the nginx service
+  become: true
+  service:
+    name: nginx
+    state: restarted

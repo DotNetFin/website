@@ -1,0 +1,8 @@
+[Path]
+PathModified=/var/www/DotNetFin/website
+
+[Path]
+PathModified=/var/www/DotNetFin/wwwroot
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,12 @@
+[Unit]
+Description=DotNetFin website Application restarter
+After=network.target
+StartLimitIntervalSec=30
+StartLimitBurst=15
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/systemctl restart kestrel-dotnetfin.service
+
+[Install]
+WantedBy=multi-user.target
